@@ -105,6 +105,7 @@ public class Task {
         return end;
     }
     public boolean isRepeated() {
+
         return repeated;
     }
     public int nextTimeAfter(int current) {
