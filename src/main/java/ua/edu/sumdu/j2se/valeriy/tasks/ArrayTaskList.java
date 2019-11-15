@@ -7,14 +7,8 @@ public class ArrayTaskList {
     public Task []  arrayList;
     private Task [] arrayListNew;
 
-
     public ArrayTaskList() {
         arrayList = new Task[0];
-    }
-
-    public ArrayTaskList(int size){
-
-        arrayListNew = new  Task[size];
     }
 
     public void add(Task task) {
