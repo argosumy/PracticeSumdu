@@ -8,6 +8,7 @@ public class Task {
     private int interval;
     private boolean active;
     private boolean repeated;
+
     @Override
     public String toString() {
         return "Task{"
@@ -28,6 +29,10 @@ public class Task {
                 + repeated
                 + '}';
     }
+
+    public Task() {
+    }
+
     public Task(String title, int time) {
         this.title = title;
         this.time = time;

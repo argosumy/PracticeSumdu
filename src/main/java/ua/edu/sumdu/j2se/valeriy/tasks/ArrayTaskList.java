@@ -1,64 +1,93 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 
 public class ArrayTaskList {
-    public ArrayList<Task> taskList;
-   // public ArrayList<Task> taskListLimit;
+    public Task []  arrayList;
+    private Task [] arrayListNew;
 
-    @Override
-    public String toString() {
-        return "ArrayTaskList{"
-                + "taskList="
-                + taskList
-                + '}';
-    }
 
     public ArrayTaskList() {
-        this.taskList = new ArrayList<Task>();
+        arrayList = new Task[0];
+    }
+
+    public ArrayTaskList(int size){
+
+        arrayListNew = new  Task[size];
     }
 
     public void add(Task task) {
-        taskList.add(task);
-
+        if (size() == 0) {
+            arrayListNew = new Task[1];
+            this.arrayList = arrayListNew;
+            arrayList [0] = task;
+            //marker = true;
+        }
+        else {
+            if (arrayList.length == size()) {
+                arrayListNew = new Task [size() + 1];
+            }
+            //Task [] arrayListNew = new Task[arrayList.length + 1];
+            int i = 0;
+            for (Task k : arrayList) {
+                if (k == null) {
+                    break;}
+                arrayListNew [i] = k;
+                i++;
+            }
+            arrayListNew [size()] = task;
+            this.arrayList = arrayListNew;
+        }
     }
 
     public boolean remove(Task task) {
-        int size = size();
-        taskList.remove(task);
-        if (size == size()) {
-            return false;
+        boolean removTask = false; //проверка удаления
+        //создаем промежуточный массив
+        arrayListNew = new Task [arrayList.length];
+        int j = 0;
+        for (Task k: arrayList) {
+            if (( k != task ) | (removTask == true)) {
+                arrayListNew [j] = k;
+                j++;
+            }
+            else {
+                removTask = true;
+            }
         }
-        else {
-            return true;
-        }
+        //данные из промежуточного массива переписываем в основной
+        arrayList = arrayListNew;
+        return removTask;
     }
 
     public int size() {
-        return taskList.size();
+        int i = 0;
+        for (Task k:arrayList) {
+            if (k != null){
+                i++;
+            }
+        }
+        return i;
     }
 
-   public Task getTask(int index) {
-        return taskList.get(index);
-   }
-
-   public ArrayTaskList incoming(int from, int to) {
-       ArrayTaskList taskListLimit = new ArrayTaskList();
-       for (Task k:this.taskList) {
-           for (int i = from; i < to; i++) {
-               if (!k.isActive()) {
-                   break;
-               }
-               if ((k.nextTimeAfter(i) != -1) && (k.nextTimeAfter(i)) < to) {
-                    System.out.println(k);
-                    taskListLimit.add(k);
-                    break;
-               }
-           }
-       }
-       return taskListLimit;
+    public Task getTask(int index) {
+         return arrayList[index];
     }
 
+    public ArrayTaskList incoming(int from, int to) {
+        ArrayTaskList arrayListPredel = new ArrayTaskList(size());
+        for (Task k: arrayList) {
+            if (k.isActive() != false) {
+                arrayListPredel.arrayList[0] = k;
+            }
+        }
+        return arrayListPredel;
+    }
 
-
+    @Override
+    public String toString() {
+        return "ArrayTaskList{" +
+                "arrayList=" + Arrays.toString(arrayList) +
+                "} " + super.toString();
+    }
 }
