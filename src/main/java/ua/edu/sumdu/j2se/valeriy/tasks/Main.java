@@ -9,33 +9,17 @@ public class Main {
 	    Task task0 = new Task("Inactive     OUT", 0, 1000, 1);
         task0.setActive(false);
         System.out.println(task0);
-        ArrayTaskList taskList1 = new ArrayTaskList();
-        System.out.println("нулевой " + taskList1.arrayList.length);
+        //ArrayTaskList taskList1 = new ArrayTaskList();
+        LinkedTaskList taskList1 = new LinkedTaskList();
+        //System.out.println("нулевой " + taskList1.getArrayList().length);
 
         taskList1.add(task0);
-
-        //System.out.println(taskList1);
-        System.out.println(taskList1);
-        System.out.println("размер " + taskList1.arrayList.length);
-        //System.out.println(taskList [0]);
-
-       // Task [] taskList = add(task0);
-        //System.out.println(taskList.toString());
-        //taskList.add(task0);
-
-        Task task1 = new Task("Simple bound OUT", 50);
+        Task task1 = new Task("Repeat inside IN", 51, 58, 2);
         task1.setActive(true);
         taskList1.add(task1);
-        System.out.println("1   " + taskList1);
-        Task task2 = new Task("Simple bound IN", 60);
+        Task task2 = new Task("Repeat outside IN", 0, 100, 5);
         task2.setActive(true);
         taskList1.add(task2);
-        Task task3 = new Task("Repeat inside IN", 51, 58, 2);
-        task3.setActive(true);
-        taskList1.add(task3);
-        Task task4 = new Task("Repeat outside IN", 0, 100, 5);
-        task4.setActive(true);
-        taskList1.add(task4);
         Task task5 = new Task("Repeat outside OUT", 0, 100, 22);
         task5.setActive(true);
         taskList1.add(task5);
@@ -58,12 +42,24 @@ public class Main {
         task11.setActive(true);
         taskList1.add(task11);
         System.out.println("размер size " + taskList1.size());
-        System.out.println(taskList1.toString());
+            for (int i = 0; i <= taskList1.size(); i++) {
+                    System.out.println(i + " : " + taskList1.getTask(i));
+            }
+        taskList1.remove(task11);
+        System.out.println("размер size " + taskList1.size());
+
+            for (int i = 0; i <= taskList1.size(); i++) {
+                    System.out.println(i + " : " + taskList1.getTask(i));
+            }
+
+
+
+     //   System.out.println(taskList1.toString());
        // taskListLimit = taskList1.incoming(50,60);
        // System.out.println("размерLim " + taskListLimit.size());
 
-        System.out.println(taskList1.remove(task1));
+      //  System.out.println(taskList1.remove(task1));
 
-        System.out.println(taskList1.arrayList.length);
+        //System.out.println(taskList1.getArrayList().length);
 	}
 }

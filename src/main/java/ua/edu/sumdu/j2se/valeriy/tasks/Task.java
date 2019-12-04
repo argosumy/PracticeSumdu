@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
+import java.io.IOException;
+
 public class Task {
     private String title;
     private int time;
@@ -33,14 +35,20 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, int time) {
+    public Task(String title, int time)throws IllegalArgumentException {
+        if(time < 0) {
+            throw new IllegalArgumentException("Параметр time не может быть меньше 0");
+        }
         this.title = title;
         this.time = time;
         setActive(false);
         setRepeated(false);
     }
-    public Task(String title, int start, int end, int interval) {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException  {
         this.title = title;
+        if ((start < 0) | (end < 0) | (interval <= 0)) {
+            throw new IllegalArgumentException("Временные характеристики не могут быть меньше 0");
+        }
         this.start = start;
         this.end = end;
         this.interval = interval;
@@ -56,17 +64,14 @@ public class Task {
         return active;
     }
     public void setActive(boolean active) {
-
         this.active = active;
     }
 
     public String getTitle() {
-
         return title;
     }
 
     public void setTitle(String title) {
-
         this.title = title;
     }
     //для одномоментных задач изменение параметров  выполнения
@@ -76,10 +81,11 @@ public class Task {
         }
         return time;
     }
-    public void setTime(int time) {
+    public void setTime(int time) throws IllegalArgumentException  {
         if (isRepeated()) {
             setRepeated(false);
         }
+        if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");
         this.time = time;
     }
     //для повторяющихся задач

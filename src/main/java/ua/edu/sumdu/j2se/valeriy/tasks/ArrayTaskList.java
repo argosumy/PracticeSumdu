@@ -1,28 +1,41 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
 import java.util.Arrays;
-import java.util.ArrayList;
 
-public class ArrayTaskList {
-    public Task []  arrayList;
+public class ArrayTaskList extends AbstractTaskList {
+    private Task []  arrayList;
     private Task [] arrayListNew;
-
+/*
+* construction
+* */
     public ArrayTaskList() {
-        arrayList = new Task[0];
+        arrayList = new Task[10];
     }
-
-    public void add(Task task) {
+/*
+*
+* geter and seter arrayList
+*
+* */
+    public Task[] getArrayList() {
+        return arrayList;
+    }
+    public void setArrayList(Task[] arrayList) {
+        this.arrayList = arrayList;
+    }
+    @Override
+    public void add(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("Задача не может быть null ");
+        }
         if (size() == 0) {
             arrayListNew = new Task[1];
-            this.arrayList = arrayListNew;
+            arrayList = arrayListNew;
             arrayList [0] = task;
-            //marker = true;
         }
         else {
             if (arrayList.length == size()) {
                 arrayListNew = new Task [size() + 1];
             }
-            //Task [] arrayListNew = new Task[arrayList.length + 1];
             int i = 0;
             for (Task k : arrayList) {
                 if (k == null) {
@@ -34,14 +47,17 @@ public class ArrayTaskList {
             this.arrayList = arrayListNew;
         }
     }
-
-    public boolean remove(Task task) {
+    @Override
+    public boolean remove(Task task) throws NullPointerException {
+        if (task == null) {
+            throw new NullPointerException("Задача не может быть null ");
+        }
         boolean removTask = false; //проверка удаления
         //создаем промежуточный массив
         arrayListNew = new Task [arrayList.length];
         int j = 0;
         for (Task k: arrayList) {
-            if (( k != task ) | (removTask == true)) {
+            if (( k != task ) | ( removTask )) {
                 arrayListNew [j] = k;
                 j++;
             }
@@ -53,7 +69,7 @@ public class ArrayTaskList {
         arrayList = arrayListNew;
         return removTask;
     }
-
+    @Override
     public int size() {
         int i = 0;
         for (Task k:arrayList) {
@@ -63,19 +79,38 @@ public class ArrayTaskList {
         }
         return i;
     }
+    @Override
+    public Task getTask(int index)throws IndexOutOfBoundsException  {
+        if (index < 0) {
+            throw new IndexOutOfBoundsException("Ошибка. Задачи с индексом");
+        }
+        Task task;
+        task = null;
 
-    public Task getTask(int index) {
-         return arrayList[index];
+        try {
+            task = arrayList[index];
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.println("Ошибка. Задачи с индексом " + index + " нет");
+        }
+        return task;
     }
-
+    @Override
     public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList arrayListPredel = new ArrayTaskList(size());
-        for (Task k: arrayList) {
-            if (k.isActive() != false) {
-                arrayListPredel.arrayList[0] = k;
+        ArrayTaskList taskListLimit;
+        taskListLimit = new ArrayTaskList();
+        for (Task k:this.arrayList) {
+            for (int i = from; i < to; i++) {
+                if (!k.isActive()) {
+                    break;
+                }
+                if ((k.nextTimeAfter(i) != -1) && (k.nextTimeAfter(i)) < to) {
+                    System.out.println(k);
+                    taskListLimit.add(k);
+                    break;
+                }
             }
         }
-        return arrayListPredel;
+        return taskListLimit;
     }
 
     @Override
