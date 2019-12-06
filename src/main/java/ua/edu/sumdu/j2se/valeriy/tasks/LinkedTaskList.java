@@ -1,7 +1,5 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
-
-
 public class LinkedTaskList extends AbstractTaskList {
     private int count;
     private Node actualNode;
@@ -91,7 +89,7 @@ public class LinkedTaskList extends AbstractTaskList {
         }
         throw new IndexOutOfBoundsException("Index out of Bounds");
     }
-    @Override
+/*    @Override
     public LinkedTaskList incoming(int from, int to) {
         LinkedTaskList linkedTaskList = new LinkedTaskList();
 
@@ -109,13 +107,6 @@ public class LinkedTaskList extends AbstractTaskList {
             }
         }
         return linkedTaskList;
-    }
-
-
-
-
-
-
-
+    }*/
 }
 

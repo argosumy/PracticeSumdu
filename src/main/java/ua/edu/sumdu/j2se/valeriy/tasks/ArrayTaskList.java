@@ -94,7 +94,7 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         return task;
     }
-    @Override
+   /* @Override
     public ArrayTaskList incoming(int from, int to) {
         ArrayTaskList taskListLimit;
         taskListLimit = new ArrayTaskList();
@@ -111,7 +111,7 @@ public class ArrayTaskList extends AbstractTaskList {
             }
         }
         return taskListLimit;
-    }
+    }*/
 
     @Override
     public String toString() {
