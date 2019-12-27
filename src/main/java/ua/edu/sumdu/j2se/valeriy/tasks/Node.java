@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
-public class Node {
+public class Node implements Cloneable {
     private Node nextNode;
     private Task task;
 
@@ -33,5 +33,10 @@ public class Node {
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    @Override
+    public Node clone() throws CloneNotSupportedException {
+        return (Node) super.clone();
     }
 }

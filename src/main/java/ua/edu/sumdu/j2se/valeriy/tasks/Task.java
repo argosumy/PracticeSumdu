@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2se.valeriy.tasks;
 
 import java.io.IOException;
-
-public class Task {
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
+public class Task implements Cloneable, Serializable  {
     private String title;
-    private int time;
-    private int start;
-    private int end;
+    private LocalDateTime time;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int interval;
     private boolean active;
     private boolean repeated;
@@ -35,25 +37,33 @@ public class Task {
     public Task() {
     }
 
-    public Task(String title, int time)throws IllegalArgumentException {
-        if(time < 0) {
-            throw new IllegalArgumentException("Параметр time не может быть меньше 0");
+    public Task(String title, LocalDateTime time)throws IllegalArgumentException {
+            this.title = title;
+            this.time = time;
+        if((title == null) && (time.isBefore(LocalDateTime.now().minusMonths(1000)))) {
+            throw new IllegalArgumentException("Параметр  не может быть null");
         }
-        this.title = title;
-        this.time = time;
         setActive(false);
         setRepeated(false);
+
     }
-    public Task(String title, int start, int end, int interval) throws IllegalArgumentException  {
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException  {
         this.title = title;
-        if ((start < 0) | (end < 0) | (interval <= 0)) {
+        try {
+            this.start = start;
+            this.end = end;
+        }
+        catch (IllegalArgumentException ex){
+            System.out.println("Не верный параметр");
+        }
+
+        this.interval = (int)interval;
+        if ((title == null)&&(start.isBefore(LocalDateTime.now()))&&(end.isBefore(LocalDateTime.now()))) {
             throw new IllegalArgumentException("Временные характеристики не могут быть меньше 0");
         }
-        this.start = start;
-        this.end = end;
-        this.interval = interval;
         setActive(false);
         setRepeated(true);
+
     }
     public void setRepeated(boolean repeated) {
 
@@ -64,6 +74,7 @@ public class Task {
         return active;
     }
     public void setActive(boolean active) {
+
         this.active = active;
     }
 
@@ -75,21 +86,22 @@ public class Task {
         this.title = title;
     }
     //для одномоментных задач изменение параметров  выполнения
-    public int getTime() {
+    public LocalDateTime getTime() throws IllegalArgumentException {
         if (isRepeated()) {
             time = start;
         }
+       /* if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");*/
         return time;
     }
-    public void setTime(int time) throws IllegalArgumentException  {
+    public void setTime(LocalDateTime time) throws IllegalArgumentException  {
         if (isRepeated()) {
             setRepeated(false);
         }
-        if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");
+        //if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");
         this.time = time;
     }
     //для повторяющихся задач
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         if (!isRepeated()) {
             start = time;
         }
@@ -101,7 +113,7 @@ public class Task {
         }
         return interval;
     }
-    public void setTime(int start, int end, int interval) {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) {
         this.start = start;
         this.end = end;
         this.interval = interval;
@@ -109,7 +121,8 @@ public class Task {
             setRepeated(true);
         }
     }
-    public int getEndTime() {
+
+    public LocalDateTime getEndTime() {
         if (!isRepeated()) {
             end = time;
         }
@@ -119,27 +132,52 @@ public class Task {
 
         return repeated;
     }
-    public int nextTimeAfter(int current) {
-        int nextTime = -1;
-        if (current < getStartTime())  {
+
+    public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        LocalDateTime nextTime;
+        nextTime = null;
+        if (current.isBefore(getStartTime()))  {
             nextTime = getStartTime();
         } else {
-            if (current < getEndTime()) {
+            if (current.isBefore(getEndTime())) {
                 nextTime = getStartTime();
-                while ((getRepeatInterval() != 0) && (current >= (nextTime))) {
-                    if ((nextTime + getRepeatInterval()) > getEndTime()) {
-                        nextTime = -1;
+                while ((getRepeatInterval() != 0) && ((current.isAfter(nextTime)) || current.isEqual(nextTime))) {
+                    if (nextTime.plusSeconds(getRepeatInterval()).isAfter(getEndTime())) {
+                        nextTime = null;
                         break;
                     }
-
-                    nextTime = (nextTime + getRepeatInterval());
+                    nextTime = nextTime.plusSeconds(getRepeatInterval());
                 }
             }
         }
         if (!isActive()) {
-            nextTime = -1;
+            nextTime = null;
         }
         return nextTime;
+    }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Task klonTask = (Task) super.clone();
+        return klonTask;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return time == task.time &&
+                start == task.start &&
+                end == task.end &&
+                interval == task.interval &&
+                active == task.active &&
+                repeated == task.repeated &&
+                title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval, active, repeated);
     }
 }
 
