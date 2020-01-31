@@ -2,7 +2,9 @@ package ua.edu.sumdu.j2se.valeriy.tasks;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 public class Task implements Cloneable, Serializable  {
     private String title;
@@ -15,16 +17,17 @@ public class Task implements Cloneable, Serializable  {
 
     @Override
     public String toString() {
+        if((start!=null)&(end!=null))
         return "Task{"
                 + "Название задачи='"
                 + title
                 + '\''
-                + ", time="
-                + time
-                + ", start="
-                + start
-                + ", end="
-                + end
+                + ", time= "
+                + time//.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
+                + ", start= "
+                + start.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
+                + ", end= "
+                + end.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
                 + ", Повтор задачи через="
                 + interval
                 + ", Задача активная? = "
@@ -32,6 +35,24 @@ public class Task implements Cloneable, Serializable  {
                 + ", Задача повторяющаяся? = "
                 + repeated
                 + '}';
+        else
+            return "Task{"
+                    + "Название задачи='"
+                    + title
+                    + '\''
+                    + ", time= "
+                    + time.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
+                    + ", start= "
+                    + start//.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
+                    + ", end= "
+                    + end
+                    + ", Повтор задачи через="
+                    + interval
+                    + ", Задача активная? = "
+                    + active
+                    + ", Задача повторяющаяся? = "
+                    + repeated
+                    + '}';
     }
 
     public Task() {

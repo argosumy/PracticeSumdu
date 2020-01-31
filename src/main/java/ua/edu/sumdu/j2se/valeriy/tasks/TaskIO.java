@@ -6,7 +6,6 @@ import java.io.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Iterator;
 
 public class TaskIO {
@@ -18,6 +17,7 @@ public class TaskIO {
         Iterator it = tasks.iterator();
             try (DataOutputStream dataOutput = new DataOutputStream(out)) {
                 dataOutput.write(tasks.size());
+                System.out.println("Write size " + tasks.size());
                 while (it.hasNext()) {
                     task = (Task) it.next();
                     System.out.println("ПОДГОТОВКА - " + task);
@@ -39,12 +39,16 @@ public class TaskIO {
                 }
             }
             catch (IOException e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
             }
     }
 
     public static void read(AbstractTaskList tasks, InputStream in){
             try (DataInputStream dataIn = new DataInputStream(in)) {
                 int size = dataIn.read();
+                System.out.println("Read size " +  size);
+
                 for (int i = 0; i < size; i++){
                     int titlLength = dataIn.read();
                     String nameTitle = dataIn.readUTF();
@@ -72,6 +76,8 @@ public class TaskIO {
                     }
                 } //конец цикла for
             } catch (IOException e) {
+                System.out.println("Error read " + e.getMessage());
+                e.printStackTrace();
         }
     }
 
@@ -91,7 +97,8 @@ public class TaskIO {
                 }
             }
             catch(IOException ex){
-                System.out.println(ex.getMessage());
+                System.out.println("readBinarry " + ex.getMessage());
+                ex.printStackTrace();
             }
     }
 

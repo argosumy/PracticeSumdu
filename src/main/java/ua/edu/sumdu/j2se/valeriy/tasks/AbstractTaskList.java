@@ -35,30 +35,6 @@ public abstract class AbstractTaskList implements Cloneable, Iterator, Iterable{
         return null;
     }
 
-    /* public final AbstractTaskList incoming(LocalDateTime from, LocalDateTime to) {
-        AbstractTaskList taskListLimit;
-        if(this instanceof ArrayTaskList){
-            taskListLimit = TaskListFactory.createTaskList(ListTypes.types.ARRAY);
-        }
-        else {
-            taskListLimit = TaskListFactory.createTaskList(ListTypes.types.LINKED);
-        }
-        this.getStream().filter(task -> (task.isActive() & (task != null) & (task.nextTimeAfter(from) != null) & (task.nextTimeAfter(from).isBefore(to))))
-                .forEach(task -> taskListLimit.add(task));
-        /*for (int i =0; i < this.size(); i++) {
-            for (int j = from; j < to; j++) {
-                if ((!this.getTask(i).isActive()) | (this.getTask(i) != null)) {
-                    break;
-                }
-                if ((this.getTask(i).nextTimeAfter(i) != -1) &&
-                        (this.getTask(i).nextTimeAfter(i)) < to) {
-                    taskListLimit.add(this.getTask(i));
-                    break;
-                }
-            }
-        }*/
-      /*  return taskListLimit;
-    }*/
 
     public abstract Stream<Task> getStream();
 

@@ -100,24 +100,7 @@ public class ArrayTaskList extends AbstractTaskList  {
         }
         return task;
     }
-   /* @Override
-    public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList taskListLimit;
-        taskListLimit = new ArrayTaskList();
-        for (Task k:this.arrayList) {
-            for (int i = from; i < to; i++) {
-                if (!k.isActive()) {
-                    break;
-                }
-                if ((k.nextTimeAfter(i) != -1) && (k.nextTimeAfter(i)) < to) {
-                    System.out.println(k);
-                    taskListLimit.add(k);
-                    break;
-                }
-            }
-        }
-        return taskListLimit;
-    }*/
+
 
     @Override
     public boolean equals(Object o) {
@@ -148,15 +131,17 @@ public class ArrayTaskList extends AbstractTaskList  {
                 "} " + super.toString();
     }
 
+
     @Override
-    public Iterator<Object> iterator() {
-        Iterator<Object> it = new Iterator<Object>() {
+    public Iterator <Object> iterator() {
+        return new TaskIterator();
+    }
+    public class TaskIterator implements Iterator {
             boolean marker;
             private int currentIndex = 0;
 
             @Override
             public boolean hasNext() {
-
                 return ((currentIndex < size()) && (arrayList[currentIndex] != null));
             }
 
@@ -187,9 +172,9 @@ public class ArrayTaskList extends AbstractTaskList  {
                 }
                 else throw new IllegalStateException();
             }
-        };
-        return it;
     }
+
+
 
     @Override
     public Stream<Task> getStream() {
