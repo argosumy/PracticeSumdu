@@ -71,14 +71,6 @@ public class ActionTask implements Action {
                 task.setTime(start, end, interval);
             }
             else{
-                /*
-                 System.out.println("Запланировать повторение задачи");
-        System.out.println("1. ДА     /     2.НЕТ");
-        if (readKey() == 1){
-            end = inTaskDataKey(start,true);
-            System.out.print("ВВЕДИТЕ интервал повторений - ");
-            int interval = readKey();
-                */
                 start = task.getTime();
                 System.out.println("Начало задачи - "
                         + start.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.'")));

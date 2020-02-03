@@ -150,7 +150,6 @@ public class Task implements Cloneable, Serializable  {
     }
 
     public boolean isRepeated() {
-
         return repeated;
     }
 

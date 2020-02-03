@@ -7,10 +7,6 @@ public interface Action {
     public void taskRemove(AbstractTaskList taskList);
     public void taskEdit(AbstractTaskList taskList, int numAction);
     public int readKey();
-//    public void readFile();
-//   public void writeFile();
-
-
 
 
 }
