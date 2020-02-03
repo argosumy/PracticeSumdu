@@ -1,11 +1,10 @@
-package ua.edu.sumdu.j2se.valeriy.tasks;
+package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+
 public class Task implements Cloneable, Serializable  {
     private String title;
     private LocalDateTime time;
@@ -14,6 +13,7 @@ public class Task implements Cloneable, Serializable  {
     private int interval;
     private boolean active;
     private boolean repeated;
+    private String id;
 
     @Override
     public String toString() {
@@ -118,7 +118,6 @@ public class Task implements Cloneable, Serializable  {
         if (isRepeated()) {
             setRepeated(false);
         }
-        //if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");
         this.time = time;
     }
     //для повторяющихся задач
@@ -149,9 +148,18 @@ public class Task implements Cloneable, Serializable  {
         }
         return end;
     }
+
     public boolean isRepeated() {
 
         return repeated;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public LocalDateTime nextTimeAfter(LocalDateTime current) {
@@ -163,11 +171,11 @@ public class Task implements Cloneable, Serializable  {
             if (current.isBefore(getEndTime())) {
                 nextTime = getStartTime();
                 while ((getRepeatInterval() != 0) && ((current.isAfter(nextTime)) || current.isEqual(nextTime))) {
-                    if (nextTime.plusSeconds(getRepeatInterval()).isAfter(getEndTime())) {
+                    if (nextTime.plusMinutes(getRepeatInterval()).isAfter(getEndTime())) {
                         nextTime = null;
                         break;
                     }
-                    nextTime = nextTime.plusSeconds(getRepeatInterval());
+                    nextTime = nextTime.plusMinutes(getRepeatInterval());
                 }
             }
         }

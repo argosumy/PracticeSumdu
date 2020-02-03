@@ -1,9 +1,5 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.view;
 
-import ua.edu.sumdu.j2se.valeriy.tasks.AbstractTaskList;
-
-import java.util.Scanner;
-
 public class ShowMenu implements View {
     public static String [] hadMenu = new String[] {"1. Make new TASK","2. Worke with Task list","3. Show TASK list ","0. EXIT"};
     public static String [] workeMenu = new String[] {"1. Make new TASK","2. Delete TASK","3. Edit TASK ", "0. Had menu" };

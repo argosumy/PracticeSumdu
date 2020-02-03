@@ -1,7 +1,6 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.view;
 
-import ua.edu.sumdu.j2se.valeriy.tasks.AbstractTaskList;
-import ua.edu.sumdu.j2se.valeriy.tasks.Task;
+import ua.edu.sumdu.j2se.valeriy.tasks.model.AbstractTaskList;
 
 public class ShowTasks implements View {
 

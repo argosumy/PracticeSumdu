@@ -1,9 +1,8 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.controller;
 
-import ua.edu.sumdu.j2se.valeriy.tasks.*;
-import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowTasks;
+import ua.edu.sumdu.j2se.valeriy.tasks.model.AbstractTaskList;
+import ua.edu.sumdu.j2se.valeriy.tasks.model.Task;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -188,7 +187,7 @@ public class ActionTask implements Action {
         String text;
         while (true) {
             Scanner in = new Scanner(System.in);
-            text = in.next();
+            text = in.nextLine();
             break;
         }
         return text;

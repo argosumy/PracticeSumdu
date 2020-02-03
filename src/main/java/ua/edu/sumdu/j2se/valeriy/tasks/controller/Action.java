@@ -1,9 +1,6 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.controller;
 
-import ua.edu.sumdu.j2se.valeriy.tasks.AbstractTaskList;
-import ua.edu.sumdu.j2se.valeriy.tasks.Task;
-
-import java.util.Scanner;
+import ua.edu.sumdu.j2se.valeriy.tasks.model.AbstractTaskList;
 
 public interface Action {
     public void taskAdd(AbstractTaskList taskList);

@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.valeriy.tasks;
+package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.stream;
 
-public class ArrayTaskList extends AbstractTaskList  {
+public class ArrayTaskList extends AbstractTaskList {
     private Task []  arrayList;
     private Task [] arrayListNew;
 /*
@@ -133,7 +133,7 @@ public class ArrayTaskList extends AbstractTaskList  {
 
 
     @Override
-    public Iterator <Object> iterator() {
+    public Iterator <Task> iterator() {
         return new TaskIterator();
     }
     public class TaskIterator implements Iterator {
@@ -173,7 +173,6 @@ public class ArrayTaskList extends AbstractTaskList  {
                 else throw new IllegalStateException();
             }
     }
-
 
 
     @Override

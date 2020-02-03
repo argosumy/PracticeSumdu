@@ -1,13 +1,10 @@
-package ua.edu.sumdu.j2se.valeriy.tasks;
+package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Objects;
-import java.lang.reflect.InvocationTargetException;
 import java.util.stream.Stream;
 
-public class LinkedTaskList extends AbstractTaskList  {
+public class LinkedTaskList extends AbstractTaskList {
     private int count;
     private Node actualNode;
     /*
@@ -130,8 +127,8 @@ public class LinkedTaskList extends AbstractTaskList  {
 
     //Итератор
     @Override
-    public Iterator<Object> iterator() {
-        return new Iterator<Object>() {
+    public Iterator<Task> iterator() {
+        return new Iterator<Task>() {
             private Node current = actualNode;// = (Node) actualNode.clone();
             boolean marker;
             @Override

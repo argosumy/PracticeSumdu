@@ -1,4 +1,4 @@
-package ua.edu.sumdu.j2se.valeriy.tasks;
+package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
 import com.google.gson.Gson;
 
@@ -17,10 +17,10 @@ public class TaskIO {
         Iterator it = tasks.iterator();
             try (DataOutputStream dataOutput = new DataOutputStream(out)) {
                 dataOutput.write(tasks.size());
-                System.out.println("Write size " + tasks.size());
+                System.out.println("Сохранение задач: " + tasks.size() + " шт. ");
                 while (it.hasNext()) {
                     task = (Task) it.next();
-                    System.out.println("ПОДГОТОВКА - " + task);
+                    System.out.println("Задача сохранена: - " + task);
                     dataOutput.write(task.getTitle().length());
                     dataOutput.writeUTF(task.getTitle());
                     if (task.isActive()) {
@@ -47,7 +47,7 @@ public class TaskIO {
     public static void read(AbstractTaskList tasks, InputStream in){
             try (DataInputStream dataIn = new DataInputStream(in)) {
                 int size = dataIn.read();
-                System.out.println("Read size " +  size);
+                System.out.println("У вас " +  size + " задач");
 
                 for (int i = 0; i < size; i++){
                     int titlLength = dataIn.read();
@@ -64,7 +64,6 @@ public class TaskIO {
                         if(activ == 1) task.setActive(true);
                         else task.setActive(false);
                         tasks.add(task);
-                        System.out.println("ВЫВОД - " + task);
                     }
                     else {
                         Task task = new Task(nameTitle,startTime);
@@ -72,34 +71,32 @@ public class TaskIO {
                         if(activ == 1) task.setActive(true);
                         else task.setActive(false);
                         tasks.add(task);
-                        System.out.println("ВЫВОД - " + task);
                     }
                 } //конец цикла for
+
             } catch (IOException e) {
                 System.out.println("Error read " + e.getMessage());
                 e.printStackTrace();
         }
     }
 
-    public static void writeBinary(AbstractTaskList tasks, File file){
-        try(FileOutputStream fileOut = new FileOutputStream(file) ){
-            write(tasks,fileOut);
+    public static void writeBinary(AbstractTaskList tasks, File file) {
+        try {
+            TaskIO.write(tasks,  new FileOutputStream(file));
         }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
+        catch (IOException e){
+            System.out.println(e.getMessage());
         }
+
     }
 
-    public static void readBinary(AbstractTaskList tasks, File file){
-            try(FileInputStream fileIn = new FileInputStream(file) ){
-                while ((fileIn.read()) != -1) {
-                    read(tasks, fileIn);
-                }
-            }
-            catch(IOException ex){
-                System.out.println("readBinarry " + ex.getMessage());
-                ex.printStackTrace();
-            }
+    public static void readBinary(AbstractTaskList tasks, File file)  {
+        try{
+            TaskIO.read(tasks, new FileInputStream(file));
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void write(AbstractTaskList tasks, Writer out)throws IOException{
