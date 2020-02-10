@@ -6,10 +6,16 @@ public class ShowTasks implements View {
 
     public ShowTasks() {
     }
+
+    /**
+     * Отображает все задачи которые есть в списке задач со всеми полями.
+     * @param tasks текущий список задач
+     * @return
+     */
     @Override
-    public Boolean show(Object menu) {
+    public Boolean show(Object tasks) {
         int i = 1;
-        AbstractTaskList taskList = (AbstractTaskList) menu;
+        AbstractTaskList taskList = (AbstractTaskList) tasks;
         if (taskList.size() == 0) {
             System.out.println("У ВАС нет задач");
             System.out.println();

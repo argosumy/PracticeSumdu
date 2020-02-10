@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-
-import static java.util.Arrays.stream;
-
 public class ArrayTaskList extends AbstractTaskList {
     private Task []  arrayList;
     private Task [] arrayListNew;
@@ -53,6 +50,7 @@ public class ArrayTaskList extends AbstractTaskList {
             this.arrayList = arrayListNew;
         }
     }
+
     @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
@@ -75,6 +73,7 @@ public class ArrayTaskList extends AbstractTaskList {
         arrayList = arrayListNew;
         return removTask;
     }
+
     @Override
     public int size() {
         int i = 0;
@@ -85,6 +84,7 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         return i;
     }
+
     @Override
     public Task getTask(int index)throws IndexOutOfBoundsException  {
         if (index < 0) {
@@ -92,7 +92,6 @@ public class ArrayTaskList extends AbstractTaskList {
         }
         Task task;
         task = null;
-
         try {
             task = arrayList[index];
         } catch (IndexOutOfBoundsException ex) {
@@ -101,13 +100,11 @@ public class ArrayTaskList extends AbstractTaskList {
         return task;
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this.hashCode() == o.hashCode()) return true;
         if (o == null || this.getClass() != o.getClass()) return false;
-       // ArrayTaskList taskList = (ArrayTaskList) o;
-        return false;//Arrays.equals(arrayList, taskList.arrayList);
+        return false;
     }
 
     @Override

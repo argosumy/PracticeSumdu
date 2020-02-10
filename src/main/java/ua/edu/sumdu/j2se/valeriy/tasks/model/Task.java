@@ -111,7 +111,6 @@ public class Task implements Cloneable, Serializable  {
         if (isRepeated()) {
             time = start;
         }
-       /* if (time < 0) throw new IllegalArgumentException("Время не может быть меньше 0");*/
         return time;
     }
     public void setTime(LocalDateTime time) throws IllegalArgumentException  {
@@ -170,11 +169,11 @@ public class Task implements Cloneable, Serializable  {
             if (current.isBefore(getEndTime())) {
                 nextTime = getStartTime();
                 while ((getRepeatInterval() != 0) && ((current.isAfter(nextTime)) || current.isEqual(nextTime))) {
-                    if (nextTime.plusMinutes(getRepeatInterval()).isAfter(getEndTime())) {
+                    if (nextTime.plusSeconds(getRepeatInterval()).isAfter(getEndTime())) {
                         nextTime = null;
                         break;
                     }
-                    nextTime = nextTime.plusMinutes(getRepeatInterval());
+                    nextTime = nextTime.plusSeconds(getRepeatInterval());
                 }
             }
         }

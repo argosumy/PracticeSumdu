@@ -1,7 +1,6 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.stream.Stream;
 
 public abstract class AbstractTaskList implements Cloneable, Iterable<Task>, Serializable {
@@ -15,17 +14,6 @@ public abstract class AbstractTaskList implements Cloneable, Iterable<Task>, Ser
         AbstractTaskList cloned = (AbstractTaskList) super.clone();
         return cloned;
     }
-
-
-/*
-    public abstract void remove();
-
-
-    public abstract boolean hasNext();
-
-
-    public abstract Object next();
-*/
 
     public abstract Stream<Task> getStream();
 

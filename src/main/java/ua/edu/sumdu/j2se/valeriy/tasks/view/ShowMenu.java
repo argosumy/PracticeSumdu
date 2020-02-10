@@ -8,7 +8,12 @@ public class ShowMenu implements View {
     public ShowMenu() {
     }
 
-
+    /**
+     * Выводит меню в консоль в зависимости от массива пунктов меню.
+     * @param men массив пунктоа меню. Реализовано 3 массива меню.Главное меню.
+     * Рабочее меню. Меню редактирования.
+     * @return
+     */
     @Override
     public Boolean show(Object men) {
         String[] menuShow = (String[]) men;

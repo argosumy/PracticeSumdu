@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.time.Instant;
@@ -10,7 +11,8 @@ import java.util.Iterator;
 
 public class TaskIO {
     static ZoneId zoneId = ZoneId.systemDefault();
-    static String jsonWrRe;
+
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
 
     public static void write(AbstractTaskList tasks, OutputStream out) {
         Task task = null;
@@ -37,10 +39,11 @@ public class TaskIO {
                         dataOutput.writeLong(task.getRepeatInterval());
                     }
                 }
+                logger.info("DataOutput Write TRUE");
             }
             catch (IOException e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+                logger.error("Exeption " + e);
             }
     }
 
@@ -48,7 +51,6 @@ public class TaskIO {
             try (DataInputStream dataIn = new DataInputStream(in)) {
                 int size = dataIn.read();
                 System.out.println("У вас " +  size + " задач");
-
                 for (int i = 0; i < size; i++){
                     int titlLength = dataIn.read();
                     String nameTitle = dataIn.readUTF();
@@ -73,36 +75,37 @@ public class TaskIO {
                         tasks.add(task);
                     }
                 } //конец цикла for
-
+                logger.info("DataInput Read TRUE");
             } catch (IOException e) {
-                System.out.println("Error read " + e.getMessage());
-                e.printStackTrace();
+               // System.out.println("Error read " + e.getMessage());
+                logger.error(e);
         }
     }
 
-    public static void writeBinary(AbstractTaskList tasks, File file) {
-        try {
-            TaskIO.write(tasks,  new FileOutputStream(file));
+    synchronized public static void writeBinary(AbstractTaskList tasks, File file) {
+        try (FileOutputStream fileOut = new FileOutputStream(file)){
+            TaskIO.write(tasks,  fileOut);
+            logger.info("Write File TRUE");
         }
         catch (IOException e){
-            System.out.println(e.getMessage());
+            logger.error(e);
         }
 
     }
 
-    public static void readBinary(AbstractTaskList tasks, File file)  {
-        try{
-            TaskIO.read(tasks, new FileInputStream(file));
+    synchronized public static void readBinary(AbstractTaskList tasks, File file)  {
+        try (FileInputStream fileIn = new FileInputStream(file) ){
+            TaskIO.read(tasks, fileIn);
+            logger.info("Read File TRUE");
         }
         catch (IOException e){
-            System.out.println(e.getMessage());
+            logger.error(e);
         }
     }
 
     public static void write(AbstractTaskList tasks, Writer out)throws IOException{
         Gson jsonWrRe = new Gson();
-        AbstractTaskList list = (ArrayTaskList) tasks;
-        out.write(jsonWrRe.toJson(list, ArrayTaskList.class));
+        jsonWrRe.toJson(tasks, out);
         out.close();
     }
 
@@ -116,27 +119,19 @@ public class TaskIO {
     }
 
     public static void writeText(AbstractTaskList tasks, File file){
-        Gson jsonWrRe = new Gson();
-        AbstractTaskList taskList = (ArrayTaskList) tasks;
         try (FileWriter writer = new FileWriter(file)){
-            writer.write(jsonWrRe.toJson(taskList, AbstractTaskList.class));
+            write(tasks, writer);
         }
-        catch (IOException ex){
-            System.out.println(ex.getMessage());
+        catch (IOException e){
+            logger.error(e);
         }
     }
 
     public static void readText(AbstractTaskList tasks, File file){
-        Gson jsonWrRe = new Gson();
-        AbstractTaskList list = new ArrayTaskList();
         try (FileReader reader = new FileReader(file)){
-            list = jsonWrRe.fromJson(reader,AbstractTaskList.class);
-            for (Object k : list) {
-                tasks.add((Task) k);
-            }
-        }
-        catch (IOException ex){
-            System.out.println(ex.getMessage());
+            read(tasks,reader);}
+        catch (IOException e){
+            logger.error(e);
         }
     }
 

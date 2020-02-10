@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.controller;
 
 import ua.edu.sumdu.j2se.valeriy.tasks.model.AbstractTaskList;
+import ua.edu.sumdu.j2se.valeriy.tasks.view.ActionTask;
 import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowMenu;
 import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowTasks;
 
@@ -13,7 +14,6 @@ public class ViewController {
 
     public ViewController(AbstractTaskList taskList) {
         actionTask = new ActionTask(taskList);
-
     }
 
     public String[] getMenu() {
@@ -32,13 +32,20 @@ public class ViewController {
         this.exit = exit;
     }
 
+    /**
+     * Контроллер методов отображающих пункты меню в консоли, а также
+     * вызов действий над задачами (создать задачу, удалить задачу,
+     * редактировать задачу, вывести список всех задач в консоль) в зависимости от
+     * menu.
+     * @param menu массив пунктов menu для вывода в консоль
+     * @param taskList текущий список задач
+     */
     public void switchMenu(String [] menu, AbstractTaskList taskList){
-        int taskID;
         setExit(false);
         ShowMenu menuView = new ShowMenu();
         ShowTasks tasksShow = new ShowTasks();
         menuView.show(menu);
-        int numAction = ReadKey.readKey();
+        int numAction = readKey();
         System.out.println();
         switch (numAction){
             case 1:
@@ -46,11 +53,11 @@ public class ViewController {
                 if (menu == ShowMenu.hadMenu || menu == ShowMenu.workeMenu) {
                     actionTask.taskAdd(taskList);
                     }
-                    //editMenu - edit TASK
+                //editMenu - edit TASK
                 if (menu == ShowMenu.editMenu){
                     actionTask.taskEdit(taskList, numAction);
                     }
-                    break;
+                break;
             case 2:
                 //hadMenu - Вызов workMenu (меню для работы с задачами)
                 if(menu == ShowMenu.hadMenu){
@@ -85,11 +92,20 @@ public class ViewController {
                     actionTask.taskEdit(taskList,numAction);
                 }
                 break;
-                case 0:
-                        setExit(true);
-                        System.out.println("EXIT");
-                    break;
+            case 0:
+                setExit(true);
+                System.out.println("EXIT");
+                break;
             }
+    }
+    public int readKey() {
+        int num;
+        while (true) {
+            Scanner in = new Scanner(System.in);
+            num = in.nextInt();
+            break;
+        }
+        return num;
     }
 
 }
