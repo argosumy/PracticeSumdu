@@ -22,14 +22,14 @@ public class Task implements Cloneable, Serializable  {
                 + "Название задачи='"
                 + title
                 + '\''
-                + ", time= "
-                + time//.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
+               // + ", time= "
+               // + time.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
                 + ", start= "
                 + start.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
                 + ", end= "
                 + end.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
-                + ", Повтор задачи через="
-                + interval
+                + ", Повтор задачи через= "
+                + (interval / 60)  + " мин."
                 + ", Задача активная? = "
                 + active
                 + ", Задача повторяющаяся? = "
@@ -42,12 +42,6 @@ public class Task implements Cloneable, Serializable  {
                     + '\''
                     + ", time= "
                     + time.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
-                    + ", start= "
-                    + start//.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm"))
-                    + ", end= "
-                    + end
-                    + ", Повтор задачи через="
-                    + interval
                     + ", Задача активная? = "
                     + active
                     + ", Задача повторяющаяся? = "
@@ -163,6 +157,9 @@ public class Task implements Cloneable, Serializable  {
     public LocalDateTime nextTimeAfter(LocalDateTime current) {
         LocalDateTime nextTime;
         nextTime = null;
+        if (!isActive()) {
+            return nextTime;
+        }
         if (current.isBefore(getStartTime()))  {
             nextTime = getStartTime();
         } else {
@@ -176,9 +173,6 @@ public class Task implements Cloneable, Serializable  {
                     nextTime = nextTime.plusSeconds(getRepeatInterval());
                 }
             }
-        }
-        if (!isActive()) {
-            nextTime = null;
         }
         return nextTime;
     }

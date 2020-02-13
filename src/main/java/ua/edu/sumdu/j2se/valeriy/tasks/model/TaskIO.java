@@ -77,12 +77,11 @@ public class TaskIO {
                 } //конец цикла for
                 logger.info("DataInput Read TRUE");
             } catch (IOException e) {
-               // System.out.println("Error read " + e.getMessage());
                 logger.error(e);
         }
     }
 
-    synchronized public static void writeBinary(AbstractTaskList tasks, File file) {
+    public static void writeBinary(AbstractTaskList tasks, File file) {
         try (FileOutputStream fileOut = new FileOutputStream(file)){
             TaskIO.write(tasks,  fileOut);
             logger.info("Write File TRUE");
@@ -93,7 +92,7 @@ public class TaskIO {
 
     }
 
-    synchronized public static void readBinary(AbstractTaskList tasks, File file)  {
+    public static void readBinary(AbstractTaskList tasks, File file)  {
         try (FileInputStream fileIn = new FileInputStream(file) ){
             TaskIO.read(tasks, fileIn);
             logger.info("Read File TRUE");

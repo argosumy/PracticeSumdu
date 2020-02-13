@@ -1,18 +1,19 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.view;
 
+import org.apache.log4j.Logger;
 import ua.edu.sumdu.j2se.valeriy.tasks.model.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.SortedMap;
 
 public class ActionTask implements Action {
-
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
     public ActionTask(AbstractTaskList taskList) {
     }
     /**Добавляет задачу в список с последующим
@@ -33,8 +34,8 @@ public class ActionTask implements Action {
             taskList.add(newTask);
         }
         else {
-            System.out.print("ВВЕДИТЕ интервал повторений - ");
-            int interval = readKey();
+            System.out.print("ВВЕДИТЕ интервал повторений (минуты) - ");
+            int interval = readKey() * 60;
             newTask = new Task(title,startEnd[0],startEnd[1],interval);
             taskList.add(newTask);
         }
@@ -64,7 +65,7 @@ public class ActionTask implements Action {
                 if(startEnd[0].isBefore(startEnd[1])){
                     break;
                 }
-                System.out.println("Задача не может окончаться раньше чем заплонирован старт ");
+                System.out.println("Задача не может прекращаться раньше чем заплонирован старт ");
             }
         }
         return startEnd;
@@ -77,8 +78,16 @@ public class ActionTask implements Action {
      */
     @Override
     public void taskRemove(AbstractTaskList taskList) {
-        System.out.print("Выберите номр задачи для удаления...");
-        taskList.remove(taskList.getTask(readKey()-1));
+        int i;
+        for(;;) {
+            System.out.print("Выберите номер задачи для удаления...");
+            i = readKey();
+            if ((i <= taskList.size()) && (i > 0)){
+                break;
+            }
+            System.out.println("Задачи с таким номером нет");
+        }
+        taskList.remove(taskList.getTask(i-1));
         //Save file
         saveFile(taskList);
         }
@@ -86,18 +95,25 @@ public class ActionTask implements Action {
     /**
      *Редактирование задачи: изменение названия, временные характеристики начала, окончания,
      * меняет опцию задачи с активной на пассивную и наоборот. После изменений сохраняет в файл текущий
-     * список задач
+     * список задач c изменениями.
      * @param taskList текущий список задач
      * @param numAction номер операции: 1. изменение название задачи 2. изменение временных характеристик
      *3.Изменение активности задачи
      */
     @Override
     public void taskEdit(AbstractTaskList taskList, int numAction) {
-        System.out.print("Выберите номр задачи для редактирования...");
-        int i = readKey()-1;
-        Task task = taskList.getTask(i);
+        int i;
+        for(;;) {
+            System.out.print("Выберите номр задачи для редактирования...");
+            i = readKey();
+            if ((i <= taskList.size()) && (i > 0)){
+                break;
+            }
+            System.out.println("Задачи с таким номером нет");
+        }
+        Task task = taskList.getTask(i-1);
         System.out.println(task);
-        taskList.remove(taskList.getTask(i));
+        taskList.remove(taskList.getTask(i-1));
         //вызов метода действий
         if(numAction == 1){
             System.out.println("Название задачи текущее - " + task.getTitle());
@@ -109,12 +125,14 @@ public class ActionTask implements Action {
             LocalDateTime [] startEnd = {null,null};
             startEnd = startEndTask();
             if(startEnd[1] == null) {
-                task = new Task(task.getTitle(), startEnd[0]);
+                task.setTime(startEnd[0]);//= new Task(task.getTitle(), startEnd[0]);
+                task.setTime(null,null,0);
             }
             else {
-                System.out.print("ВВЕДИТЕ интервал повторений - ");
-                int interval = readKey();
-                task = new Task(task.getTitle(),startEnd[0],startEnd[1],interval);
+                System.out.print("ВВЕДИТЕ интервал повторений (минуты) - ");
+                int interval = readKey() * 60;
+                task.setTime(startEnd[0], startEnd[1], interval); //= new Task(task.getTitle(),startEnd[0],startEnd[1],interval);
+                task.setTime(null);
             }
         }
         //делает задачу активной/не активной
@@ -131,6 +149,36 @@ public class ActionTask implements Action {
         taskList.add(task);
         //Save file
         saveFile(taskList);
+    }
+
+    /**
+     * Из списка задач выбирает задачи, которые запланированы во временном
+     * промежутке от даты Start до даты End и помещает их в список calendarTask
+     * @param taskList текущий список задач
+     * @return calendarTask
+     */
+    @Override
+    public SortedMap<LocalDateTime, Set<Task>> taskСalendar(AbstractTaskList taskList) {
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime end = start;
+        for (;;) {
+            start = inTaskDataKey(null, false);
+            if (start.isAfter(LocalDateTime.now())) {
+                break;
+            }
+            System.out.println("Дата начала выборки должна быть после текущей даты "
+                    + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm")));
+        }
+        for(;;) {
+            end = inTaskDataKey(start, true);
+            if(start.isBefore(end)){
+                break;
+            }
+            System.out.println("Неверно указано окончание периода ");
+        }
+        //logger.info("Start calendarTask");
+        SortedMap<LocalDateTime, Set<Task>> calendarTask = Tasks.calendar(taskList, start, end);
+        return calendarTask;
     }
 
     /**
@@ -156,7 +204,7 @@ public class ActionTask implements Action {
             System.out.println( "Сейчас  " + LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.'")));
         }
         else{
-            System.out.println( "Старт задачи запланирован " + start.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm")));
+            System.out.println( "Старт запланирован " + start.format(DateTimeFormatter.ofPattern("dd MMMM yyyy'г.' HH':'mm")));
             status = "завершения";
         }
         for(;;) {
@@ -251,31 +299,29 @@ public class ActionTask implements Action {
         int num;
         while (true) {
             Scanner in = new Scanner(System.in);
-            num = in.nextInt();
-            break;
+            String text = in.next();
+            if(text.matches("\\d+")){
+                num = Integer.parseInt(text);
+                break;
+            }
+            System.out.print("Повторите ввод..");
         }
-        return num;
+        return  num;
     }
-
-
 
     /**
      * Сохраняет текущий список задач в двух файлах (бинарный "tasks.txt" и в формате JSon "tasksjso.txt")
      * @param taskList текущий список задач
      */
     private void saveFile (AbstractTaskList taskList){
-        File taskFile = new File("src/main/resources/tasks.txt");
         File taskFileJson = new File("src/main/resources/tasksjson.txt");
         try {
-            taskFile.delete();
-            taskFile.createNewFile();
             taskFileJson.delete();
             taskFileJson.createNewFile();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
-        TaskIO.writeBinary(taskList,taskFile);
         TaskIO.writeText(taskList,taskFileJson);
     }
 

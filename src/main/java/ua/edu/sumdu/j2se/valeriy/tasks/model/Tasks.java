@@ -1,10 +1,13 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class Tasks implements Serializable {
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
     public static final Iterable<Task> incoming(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end) {
         AbstractTaskList taskListLimit;
         if (tasks instanceof ArrayTaskList){
@@ -29,8 +32,11 @@ public class Tasks implements Serializable {
         Set<Task> set = new HashSet<>();
         for (LocalDateTime i = start; i.isBefore(end.plusSeconds(1)); i = i.plusSeconds(1)){
             for (Task k: tasks) {
-                if (k.nextTimeAfter(i.minusSeconds(1)).equals(i)){
-                    set.add(k);
+                if (k.nextTimeAfter(i.minusSeconds(1)) != null) {
+                    if (k.nextTimeAfter(i.minusSeconds(1)).equals(i)) {
+                        logger.info("ADD " + k.getTitle());
+                        set.add(k);
+                    }
                 }
             }
             if (set.size() != 0){

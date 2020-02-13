@@ -41,7 +41,7 @@ public class ShowNotification implements View {
         return null;
     }
 
-    private void draw (int maxTitle){
+    public void draw (int maxTitle){
         for (int i = 0; i < maxTitle; i++){
             System.out.print("-");
         }

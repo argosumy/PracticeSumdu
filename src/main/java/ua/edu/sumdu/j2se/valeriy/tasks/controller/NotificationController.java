@@ -38,7 +38,7 @@ public class NotificationController extends Thread {
             notificationTasks();
             logger.info("task verification");
             try {
-                sleep(60000);
+                sleep(90000);
             } catch (InterruptedException e) {
                 logger.error(e.getStackTrace());
             }

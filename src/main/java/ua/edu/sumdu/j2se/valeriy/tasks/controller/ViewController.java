@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.valeriy.tasks.controller;
 
 import ua.edu.sumdu.j2se.valeriy.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.valeriy.tasks.view.ActionTask;
+import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowCalendar;
 import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowMenu;
 import ua.edu.sumdu.j2se.valeriy.tasks.view.ShowTasks;
 
@@ -55,6 +56,7 @@ public class ViewController {
                     }
                 //editMenu - edit TASK
                 if (menu == ShowMenu.editMenu){
+                    tasksShow.show(taskList);
                     actionTask.taskEdit(taskList, numAction);
                     }
                 break;
@@ -91,6 +93,11 @@ public class ViewController {
                     tasksShow.show(taskList);
                     actionTask.taskEdit(taskList,numAction);
                 }
+                break;
+            case 4:
+                ShowCalendar showCalendar = new ShowCalendar();
+                tasksShow.show(taskList);
+                showCalendar.show(actionTask.taskСalendar(taskList));
                 break;
             case 0:
                 setExit(true);

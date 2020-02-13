@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
+import org.apache.log4j.Logger;
+
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -7,6 +9,7 @@ import java.util.stream.Stream;
 public class LinkedTaskList extends AbstractTaskList {
     private int count;
     private Node actualNode;
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
     /*
      * construction
      * */
@@ -94,6 +97,7 @@ public class LinkedTaskList extends AbstractTaskList {
             }
             return current.getTask();
         }
+        logger.error(new IndexOutOfBoundsException("Index out of Bounds"));
         throw new IndexOutOfBoundsException("Index out of Bounds");
     }
 
@@ -129,7 +133,7 @@ public class LinkedTaskList extends AbstractTaskList {
     @Override
     public Iterator<Task> iterator() {
         return new Iterator<Task>() {
-            private Node current = actualNode;// = (Node) actualNode.clone();
+            private Node current = actualNode;
             boolean marker;
             @Override
             public boolean hasNext() {
@@ -140,11 +144,9 @@ public class LinkedTaskList extends AbstractTaskList {
                 marker = true;
                 Task next = current.getTask();
                 if(hasNext()) {
-                    //Task next = current.getNextNode().getTask();
                     if(!hasNext()){
-                        throw new IndexOutOfBoundsException();
+                        logger.error(new IndexOutOfBoundsException());
                     }
-                   // remove = current;
                     current = current.getNextNode();
                     next = current.getTask();
                     return next;
@@ -160,7 +162,7 @@ public class LinkedTaskList extends AbstractTaskList {
                       LinkedTaskList.this.remove(current.getTask());
                 }
                 else {
-                    throw new IllegalStateException("Виклик Iterator.remove без next");
+                    logger.error("Виклик Iterator.remove без next");
                 }
             }
         };

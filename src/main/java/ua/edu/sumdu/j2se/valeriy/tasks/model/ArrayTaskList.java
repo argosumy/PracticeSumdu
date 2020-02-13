@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
+import org.apache.log4j.Logger;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
@@ -8,6 +10,7 @@ import java.util.stream.Stream;
 public class ArrayTaskList extends AbstractTaskList {
     private Task []  arrayList;
     private Task [] arrayListNew;
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
 /*
 * construction
 * */
@@ -95,6 +98,7 @@ public class ArrayTaskList extends AbstractTaskList {
         try {
             task = arrayList[index];
         } catch (IndexOutOfBoundsException ex) {
+            logger.error(ex);
             System.out.println("Ошибка. Задачи с индексом " + index + " нет");
         }
         return task;
