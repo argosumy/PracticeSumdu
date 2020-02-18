@@ -31,12 +31,14 @@ public class ActionTask implements Action {
         startEnd = startEndTask();
         if(startEnd[1] == null) {
             newTask = new Task(title, startEnd[0]);
+            newTask.setActive(true);
             taskList.add(newTask);
         }
         else {
             System.out.print("ВВЕДИТЕ интервал повторений (минуты) - ");
             int interval = readKey() * 60;
             newTask = new Task(title,startEnd[0],startEnd[1],interval);
+            newTask.setActive(true);
             taskList.add(newTask);
         }
         //сохранение данных

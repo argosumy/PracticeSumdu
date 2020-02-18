@@ -30,7 +30,7 @@ public class Tasks implements Serializable {
     public static SortedMap<LocalDateTime, Set<Task>> calendar(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end){
         SortedMap<LocalDateTime, Set<Task>> calendarMap = new TreeMap<>();
         Set<Task> set = new HashSet<>();
-        for (LocalDateTime i = start; i.isBefore(end.plusSeconds(1)); i = i.plusSeconds(1)){
+        for (LocalDateTime i = start; i.isBefore(end.plusSeconds(1)); i = i.plusSeconds(60)){
             for (Task k: tasks) {
                 if (k.nextTimeAfter(i.minusSeconds(1)) != null) {
                     if (k.nextTimeAfter(i.minusSeconds(1)).equals(i)) {
