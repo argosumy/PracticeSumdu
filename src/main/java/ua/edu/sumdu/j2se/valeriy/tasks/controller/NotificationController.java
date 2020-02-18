@@ -23,14 +23,14 @@ public class NotificationController extends Thread {
     private void notificationTasks(){
         //Уведомление за 15 минут
         AbstractTaskList notTasks = (AbstractTaskList) Tasks.incoming(taskList,LocalDateTime.now(),LocalDateTime.now().plusMinutes(15));
-        if(notTasks.size() > 1) {
+        if(notTasks.size() > 0) {
             showNot = new ShowNotification();
             showNot.show(notTasks);
         }
     }
 
     /**
-     * Метод run вызывает метод notificationTasks() в отдельном потоке каждые 60 сек.
+     * Метод run вызывает метод notificationTasks() в отдельном потоке каждые 30 сек.
      */
     @Override
     public void run() {
@@ -38,9 +38,9 @@ public class NotificationController extends Thread {
             notificationTasks();
             logger.info("task verification");
             try {
-                sleep(90000);
+                sleep(30000);
             } catch (InterruptedException e) {
-                logger.error(e.getStackTrace());
+                logger.error(e);
             }
         }
     }

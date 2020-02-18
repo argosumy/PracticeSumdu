@@ -31,6 +31,7 @@ public class ArrayTaskList extends AbstractTaskList {
     @Override
     public void add(Task task) throws NullPointerException {
         if (task == null) {
+            logger.error(new NullPointerException("Задача не может быть null"));
             throw new NullPointerException("Задача не может быть null ");
         }
         if (size() == 0) {
@@ -57,6 +58,7 @@ public class ArrayTaskList extends AbstractTaskList {
     @Override
     public boolean remove(Task task) throws NullPointerException {
         if (task == null) {
+            logger.error(new NullPointerException("Задача не может быть null"));
             throw new NullPointerException("Задача не может быть null ");
         }
         boolean removTask = false; //проверка удаления
@@ -91,7 +93,8 @@ public class ArrayTaskList extends AbstractTaskList {
     @Override
     public Task getTask(int index)throws IndexOutOfBoundsException  {
         if (index < 0) {
-            throw new IndexOutOfBoundsException("Ошибка. Задачи с индексом");
+            logger.error(new IndexOutOfBoundsException());
+            throw new IndexOutOfBoundsException("Ошибка. Задачи с индексом < 0");
         }
         Task task;
         task = null;
@@ -158,11 +161,10 @@ public class ArrayTaskList extends AbstractTaskList {
             @Override
             public void remove() throws IllegalStateException {
                 if(marker){
-
                     arrayListNew = new Task[arrayList.length];
                     int j = 0;
                     for (int i = 0; i < arrayList.length; i++) {
-                        if ((currentIndex-1) == i) {                        //arrayListNew[i] = arrayList[j];
+                        if ((currentIndex-1) == i) {
                             currentIndex--;
                             continue;
                         }
@@ -171,7 +173,10 @@ public class ArrayTaskList extends AbstractTaskList {
                     }
                     arrayList = arrayListNew;
                 }
-                else throw new IllegalStateException();
+                else {
+                    logger.error(new IllegalStateException());
+                    throw new IllegalStateException();
+                }
             }
     }
 

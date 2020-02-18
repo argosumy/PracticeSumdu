@@ -108,7 +108,7 @@ public class TaskIO {
         out.close();
     }
 
-    public static void read(AbstractTaskList tasks, Reader in)throws IOException{
+    synchronized public static void read(AbstractTaskList tasks, Reader in)throws IOException{
         Gson jsonWrRe = new Gson();
         AbstractTaskList list = jsonWrRe.fromJson(in,ArrayTaskList.class);
         for (Object k : list){
@@ -126,7 +126,7 @@ public class TaskIO {
         }
     }
 
-    public static void readText(AbstractTaskList tasks, File file){
+    synchronized public static void readText(AbstractTaskList tasks, File file){
         try (FileReader reader = new FileReader(file)){
             read(tasks,reader);}
         catch (IOException e){

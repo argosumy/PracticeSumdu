@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.valeriy.tasks.model;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -14,7 +16,7 @@ public class Task implements Cloneable, Serializable  {
     private boolean active;
     private boolean repeated;
     private String id;
-
+    private static final Logger logger = Logger.getLogger(TaskIO.class );
     @Override
     public String toString() {
         if((start!=null)&(end!=null))
@@ -69,6 +71,7 @@ public class Task implements Cloneable, Serializable  {
             this.end = end;
         }
         catch (IllegalArgumentException ex){
+            logger.error(ex);
             System.out.println("Не верный параметр");
         }
 

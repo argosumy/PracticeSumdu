@@ -19,7 +19,7 @@ public class Main {
 				logger.error(e);
 		}
 	}
-	TaskIO.readText(taskList,taskFileJson);
+ 	TaskIO.readText(taskList,taskFileJson);
 	//открытие потока уведомлений
 	NotificationController noti = new NotificationController(taskList);
 	noti.setDaemon(true);

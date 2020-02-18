@@ -109,8 +109,12 @@ public class ViewController {
         int num;
         while (true) {
             Scanner in = new Scanner(System.in);
-            num = in.nextInt();
-            break;
+            String text = in.next();
+            if(text.matches("\\d+")){
+                num = Integer.parseInt(text);
+                break;
+            }
+            System.out.print("Повторите ввод..");
         }
         return num;
     }
